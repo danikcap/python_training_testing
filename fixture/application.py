@@ -1,6 +1,7 @@
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import Select
 from selenium import webdriver
+from fixture.session import SessionHelper
 
 
 class Application:
@@ -9,20 +10,7 @@ class Application:
         options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
         self.wd = webdriver.Firefox(options=options)
         self.wd.implicitly_wait(30)
-
-    def login(self, username, password):
-        wd = self.wd
-        self.open_home_page()
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath("//input[@value='Login']").click()
-
-    def logout(self):
-        wd = self.wd
-        wd.find_element_by_link_text("Logout").click()
+        self.session = SessionHelper(self)
 
     def open_groups_page(self):
         wd = self.wd
