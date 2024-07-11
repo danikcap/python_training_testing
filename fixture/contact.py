@@ -5,11 +5,8 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
-    def create(self, contact):
+    def fill_contact_form(self, contact):
         wd = self.app.wd
-        # init new contact creation
-        wd.find_element_by_link_text("add new").click()
-        # fill contact form
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(contact.firstname)
@@ -69,6 +66,13 @@ class ContactHelper:
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
         wd.find_element_by_name("ayear").send_keys(contact.ayear)
+
+    def create(self, contact):
+        wd = self.app.wd
+        # init new contact creation
+        wd.find_element_by_link_text("add new").click()
+        # fill contact form
+        self.fill_contact_form(contact)
         # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[20]").click()
         self.app.return_to_home_page()
@@ -81,3 +85,14 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_css_selector('[value="Delete"]').click()
         self.app.open_home_page()
+
+    def modification_first_contact(self, contact):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # submit modification for first contact
+        wd.find_element_by_css_selector('[title = "Edit"]').click()
+        # fill contact form
+        self.fill_contact_form(contact)
+        # submit update
+        wd.find_element_by_name("update").click()
+        self.app.return_to_home_page()
