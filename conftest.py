@@ -9,18 +9,17 @@ def app():
     global FIXTURE
     if FIXTURE is None:
         FIXTURE = Application()
-        FIXTURE.session.login(username="admin", password="secret")
     else:
         if not FIXTURE.is_valid():
             FIXTURE = Application()
-            FIXTURE.session.login(username="admin", password="secret")
+    FIXTURE.session.ensure_login(username="admin", password="secret")
     return FIXTURE
 
 
 @pytest.fixture(scope="session", autouse=True)
 def stop(request):
     def fin():
-        FIXTURE.session.logout()
+        FIXTURE.session.ensure_logout()
         FIXTURE.destroy()
 
     request.addfinalizer(fin)
