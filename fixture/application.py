@@ -10,7 +10,7 @@ class Application:
         options = Options()
         options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
         self.wd = webdriver.Firefox(options=options)
-        self.wd.implicitly_wait(2)
+        self.wd.implicitly_wait(1)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
@@ -24,7 +24,8 @@ class Application:
 
     def open_home_page(self):
         wd = self.wd
-        wd.get("http://localhost/addressbook/")
+        if not (wd.current_url.endswith("/addressbook/")):
+            wd.get("http://localhost/addressbook/")
 
     def return_to_home_page(self):
         wd = self.wd
