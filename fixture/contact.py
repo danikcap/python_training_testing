@@ -61,20 +61,26 @@ class ContactHelper:
             wd.find_element_by_link_text("add new").click()
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page()
-        # select first contact
-        wd.find_element_by_name("selected[]").click()
+        # select contact
+        wd.find_elements_by_name("selected[]")[index].click()
         # submit deletion
         wd.find_element_by_css_selector('[value="Delete"]').click()
         self.app.open_home_page()
         self.contact_cache = None
 
     def modification_first_contact(self, contact):
+        self.modification_contact_by_index(0, contact)
+
+    def modification_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.app.open_home_page()
-        # submit modification for first contact
-        wd.find_element_by_css_selector('[title = "Edit"]').click()
+        # submit modification for contact
+        wd.find_elements_by_css_selector('[title = "Edit"]')[index].click()
         # fill contact form
         self.fill_contact_form(contact)
         # submit update
