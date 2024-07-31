@@ -1,3 +1,5 @@
+import re
+
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
 
@@ -132,3 +134,12 @@ class ContactHelper:
         mobile_phone = wd.find_element_by_name("mobile").get_attribute("value")
         return Contact(firstname=firstname, lastname=lastname, id=id, home_phone=home_phone, mobile_phone=mobile_phone,
                        work_phone=work_phone)
+
+    def get_contact_info_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_contact_view_by_index(index)
+        text = wd.find_element_by_id("content").text
+        home_phone = re.search("H: (.*)", text).group(1)
+        work_phone = re.search("W: (.*)", text).group(1)
+        mobile_phone = re.search("M: (.*)", text).group(1)
+        return Contact(home_phone=home_phone, mobile_phone=mobile_phone, work_phone=work_phone)
