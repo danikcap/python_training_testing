@@ -1,3 +1,6 @@
+import random
+import string
+
 from sys import maxsize
 
 
@@ -43,3 +46,34 @@ class Contact:
             return int(self.id)
         else:
             return maxsize
+
+    def get_random(self):
+        def random_string(prefix, maxlen):
+            symbols = string.ascii_letters + string.digits + " "
+            return prefix + "".join([random.choice(symbols) for _ in range(random.randrange(maxlen))])
+
+        self.firstname = random_string("firstname", 5)
+        self.middlename = random_string("middlename", 5)
+        self.lastname = random_string("lastname", 5)
+        self.nickname = random_string("nickname", 5)
+        self.title = random_string("title", 5)
+        self.company = random_string("company", 5)
+        self.address = random_string("address", 5)
+        self.home_phone = random_string("home_phone", 5)
+        self.mobile_phone = random_string("mobile_phone", 5)
+        self.work_phone = random_string("work_phone", 5)
+        self.fax = random_string("fax", 5)
+        self.email = random_string("email", 5)
+        self.email2 = random_string("email2", 5)
+        self.homepage = random_string("homepage", 5)
+        self.email3 = random_string("email3", 5)
+
+        months = ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+                  "November", "December")
+        self.bday = str(random.randrange(1, 32))
+        self.bmonth = random.choice(months)
+        self.byear = str(random.randrange(0, maxsize))
+        self.aday = str(random.randrange(1, 32))
+        self.amonth = random.choice(months)
+        self.ayear = str(random.randrange(0, maxsize))
+        return self
