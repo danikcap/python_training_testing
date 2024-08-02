@@ -5,13 +5,15 @@ FIXTURE = None
 
 
 @pytest.fixture
-def app():
+def app(request):
     global FIXTURE
+    browser = request.config.getoption("--browser")
+    base_url = request.config.getoption("--baseUrl")
     if FIXTURE is None:
-        FIXTURE = Application()
+        FIXTURE = Application(browser=browser, base_url=base_url)
     else:
         if not FIXTURE.is_valid():
-            FIXTURE = Application()
+            FIXTURE = Application(browser=browser, base_url=base_url)
     FIXTURE.session.ensure_login(username="admin", password="secret")
     return FIXTURE
 
@@ -24,3 +26,8 @@ def stop(request):
 
     request.addfinalizer(fin)
     return FIXTURE
+
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--baseUrl", action="store", default="http://localhost/addressbook/")
