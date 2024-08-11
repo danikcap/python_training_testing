@@ -6,7 +6,7 @@ from model.contact import Contact
 
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "n:f:", ["number of groups", "file"])
+    opts, args = getopt.getopt(sys.argv[1:], "n:f:", ["number of contacts", "file"])
 except getopt.GetoptError as err:
     sys.exit(2)
 
