@@ -4,7 +4,7 @@ import random
 from model.group import Group
 
 
-def test_modification_group_name(app, db, json_groups):
+def test_modification_group_name(app, db, json_groups, check_ui):
     if len(db.get_group_list()) == 0:
         app.group.create(Group(name="test"))
     old_groups = db.get_group_list()
@@ -18,7 +18,8 @@ def test_modification_group_name(app, db, json_groups):
             old_groups[k] = group
             break
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
-
+    if check_ui:
+        assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_group_list(), key=Group.id_or_max)
 
 # def test_modification_group_header(app):
 #     if app.group.count() == 0:
