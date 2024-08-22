@@ -1,4 +1,5 @@
 import re
+import pytest
 
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
@@ -75,6 +76,16 @@ class ContactHelper:
         self.app.open_home_page()
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # select contact
+        wd.find_element_by_css_selector(f"input[value='{id}'").click()
+        # submit deletion
+        wd.find_element_by_css_selector('[value="Delete"]').click()
+        self.app.open_home_page()
+        self.contact_cache = None
+
     def modification_first_contact(self, contact):
         self.modification_contact_by_index(0, contact)
 
@@ -88,12 +99,33 @@ class ContactHelper:
         self.app.return_to_home_page()
         self.contact_cache = None
 
+    def modification_contact_by_id(self, id, contact):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_id(id)
+        # fill contact form
+        self.fill_contact_form(contact)
+        # submit update
+        wd.find_element_by_name("update").click()
+        self.app.return_to_home_page()
+        self.contact_cache = None
+
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page()
         row = wd.find_elements_by_name("entry")[index]
         cell = row.find_elements_by_tag_name("td")[7]
         cell.find_element_by_tag_name("a").click()
+
+    def open_contact_to_edit_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        for row in wd.find_elements_by_name("entry"):
+            if row.find_elements_by_css_selector(f"input[id='{id}']"):
+                cell = row.find_elements_by_tag_name("td")[7]
+                cell.find_element_by_tag_name("a").click()
+                break
+        else:
+            pytest.fail("Incorrect id")
 
     def open_contact_view_by_index(self, index):
         wd = self.app.wd
