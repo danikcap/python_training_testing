@@ -180,3 +180,11 @@ class ContactHelper:
         work_phone = re.search("W: (.*)", text).group(1)
         mobile_phone = re.search("M: (.*)", text).group(1)
         return Contact(home_phone=home_phone, mobile_phone=mobile_phone, work_phone=work_phone)
+
+    def add_contact_in_group(self, contact, group):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_css_selector(f"input[value='{contact.id}'").click()
+        self.change_dropdown_value("to_group", group.name)
+        wd.find_element_by_name("add").click()
+        self.app.open_home_page()
