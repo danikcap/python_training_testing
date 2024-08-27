@@ -188,3 +188,11 @@ class ContactHelper:
         self.change_dropdown_value("to_group", group.name)
         wd.find_element_by_name("add").click()
         self.app.open_home_page()
+
+    def del_contact_from_group(self, contact, group):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.change_dropdown_value("group", group.name)
+        wd.find_element_by_css_selector(f"input[value='{contact.id}'").click()
+        wd.find_element_by_name("remove").click()
+        self.app.open_home_page()
